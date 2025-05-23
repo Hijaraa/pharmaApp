@@ -45,15 +45,15 @@ public class AchatService {
             }
         }
         achat.setMontantTotal(montantTotal);
-        
+
         // Save the purchase
         Achat savedAchat = achatRepository.save(achat);
-        
+
         // Update stock for each purchase line
         if (achat.getLigneAchats() != null) {
             for (LigneAchat ligneAchat : achat.getLigneAchats()) {
                 ligneAchat.setAchat(savedAchat);
-                
+
                 // Update medicament stock
                 Optional<Medicament> optionalMedicament = medicamentRepository.findById(ligneAchat.getMedicament().getId());
                 if (optionalMedicament.isPresent()) {
@@ -61,17 +61,32 @@ public class AchatService {
                     medicament.setQuantiteStock(medicament.getQuantiteStock() + ligneAchat.getQuantite());
                     medicamentRepository.save(medicament);
                 }
-                
+
                 // Save the purchase line
                 ligneAchatRepository.save(ligneAchat);
             }
         }
-        
+
         return savedAchat;
     }
 
     public void deleteAchat(Long id) {
         achatRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Achat updateAchat(Achat achat) {
+        // Calculate total amount
+        double montantTotal = 0;
+        if (achat.getLigneAchats() != null) {
+            for (LigneAchat ligneAchat : achat.getLigneAchats()) {
+                montantTotal += ligneAchat.getMontant();
+            }
+        }
+        achat.setMontantTotal(montantTotal);
+
+        // Update the purchase
+        return achatRepository.save(achat);
     }
 
     // Additional business logic

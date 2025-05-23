@@ -17,14 +17,20 @@ public class AlertController {
 
     // Get all alerts
     @GetMapping
-    public Map<String, List<Medicament>> getAllAlerts() {
-        return alertService.getAllAlerts();
+    public List<Medicament> getAllAlerts(@RequestParam(value = "expirationDays", defaultValue = "30") int days) {
+        return alertService.getAllAlerts(days);
     }
 
     // Get low stock alerts
     @GetMapping("/low-stock")
     public List<Medicament> getLowStockAlerts() {
-        return alertService.getLowStockAlerts();
+        return alertService.getLowStockMedicaments();
+    }
+
+    // Get near expiration medicaments (for test compatibility)
+    @GetMapping("/near-expiration")
+    public List<Medicament> getNearExpirationMedicaments(@RequestParam(value = "days", defaultValue = "30") int days) {
+        return alertService.getNearExpirationMedicaments(days);
     }
 
     // Get expiring alerts

@@ -50,22 +50,22 @@ public class VenteService {
             }
         }
         vente.setMontantTotal(montantTotal);
-        
+
         // Save the sale
         Vente savedVente = venteRepository.save(vente);
-        
+
         // Update stock for each sale line
         if (vente.getLigneVentes() != null) {
             for (LigneVente ligneVente : vente.getLigneVentes()) {
                 ligneVente.setVente(savedVente);
-                
+
                 // Update medicament stock (FIFO - First In, First Out)
                 Medicament medicament = ligneVente.getMedicament();
                 int quantiteAVendre = ligneVente.getQuantite();
-                
+
                 // Get all purchase lines for this medicament ordered by expiration date (oldest first)
                 List<LigneAchat> ligneAchats = ligneAchatRepository.findByMedicamentIdOrderByDateExpirationAsc(medicament.getId());
-                
+
                 // Update stock
                 if (medicament.getQuantiteStock() >= quantiteAVendre) {
                     medicament.setQuantiteStock(medicament.getQuantiteStock() - quantiteAVendre);
@@ -73,17 +73,70 @@ public class VenteService {
                 } else {
                     throw new RuntimeException("Stock insuffisant pour le médicament: " + medicament.getNom());
                 }
-                
+
                 // Save the sale line
                 ligneVenteRepository.save(ligneVente);
             }
         }
-        
+
         return savedVente;
     }
 
     public void deleteVente(Long id) {
         venteRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Vente updateVente(Vente vente) {
+        // Calculate total amount
+        double montantTotal = 0;
+        if (vente.getLigneVentes() != null) {
+            for (LigneVente ligneVente : vente.getLigneVentes()) {
+                montantTotal += ligneVente.getMontant();
+            }
+        }
+        vente.setMontantTotal(montantTotal);
+
+        // Update the sale
+        return venteRepository.save(vente);
+    }
+
+    @Transactional
+    public Vente processVente(Vente vente) {
+        // Calculate total amount
+        double montantTotal = 0;
+        if (vente.getLigneVentes() != null) {
+            for (LigneVente ligneVente : vente.getLigneVentes()) {
+                montantTotal += ligneVente.getMontant();
+            }
+        }
+        vente.setMontantTotal(montantTotal);
+
+        // Save the sale
+        Vente savedVente = venteRepository.save(vente);
+
+        // Update stock for each sale line
+        if (vente.getLigneVentes() != null) {
+            for (LigneVente ligneVente : vente.getLigneVentes()) {
+                ligneVente.setVente(savedVente);
+
+                // Update medicament stock
+                Medicament medicament = ligneVente.getMedicament();
+                int quantiteAVendre = ligneVente.getQuantite();
+
+                if (medicament.getQuantiteStock() >= quantiteAVendre) {
+                    medicament.setQuantiteStock(medicament.getQuantiteStock() - quantiteAVendre);
+                    medicamentRepository.save(medicament);
+                } else {
+                    throw new RuntimeException("Stock insuffisant pour le médicament: " + medicament.getNom());
+                }
+
+                // Save the sale line
+                ligneVenteRepository.save(ligneVente);
+            }
+        }
+
+        return savedVente;
     }
 
     // Additional business logic

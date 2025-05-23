@@ -40,6 +40,10 @@ public class AdminService {
         return adminRepository.findByEmailAndPassword(email, password);
     }
 
+    public Admin authenticateAdmin(String username, String password) {
+        return adminRepository.findByUsernameAndPassword(username, password);
+    }
+
     // Additional business logic
     public Admin getAdminByEmail(String email) {
         return adminRepository.findByEmail(email);

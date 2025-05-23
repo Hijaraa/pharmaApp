@@ -1,6 +1,6 @@
 package com.Pharmacy.Pharmacy.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class LigneVente {
@@ -12,6 +12,7 @@ public class LigneVente {
     private Integer quantite;
     private Double prixUnitaire;
     private Double montant;
+    private Double sousTotal;
 
     @ManyToOne
     @JoinColumn(name = "vente_id")
@@ -30,6 +31,7 @@ public class LigneVente {
         this.quantite = quantite;
         this.prixUnitaire = prixUnitaire;
         this.montant = quantite * prixUnitaire;
+        this.sousTotal = this.montant;
     }
 
     // Getters and Setters
@@ -85,5 +87,13 @@ public class LigneVente {
 
     public void setMedicament(Medicament medicament) {
         this.medicament = medicament;
+    }
+
+    public Double getSousTotal() {
+        return sousTotal;
+    }
+
+    public void setSousTotal(Double sousTotal) {
+        this.sousTotal = sousTotal;
     }
 }

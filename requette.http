@@ -1,0 +1,242 @@
+### Admin API
+
+# Login
+POST http://localhost:8090/api/admins/login
+Content-Type: application/x-www-form-urlencoded
+
+email=admin@example.com&password=admin123
+
+### Create Admin
+POST http://localhost:8090/api/admins
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+### Get All Admins
+GET http://localhost:8090/api/admins
+
+### Get Admin by ID
+GET http://localhost:8090/api/admins/1
+
+### Update Admin
+PUT http://localhost:8090/api/admins/1
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "newpassword123"
+}
+
+### Delete Admin
+DELETE http://localhost:8090/api/admins/1
+
+### Fournisseur API
+
+### Create Fournisseur
+POST http://localhost:8090/api/fournisseurs
+Content-Type: application/json
+
+{
+  "nom": "Fournisseur Example",
+  "email": "fournisseur@example.com",
+  "telephone": "123456789"
+}
+
+### Get All Fournisseurs
+GET http://localhost:8090/api/fournisseurs
+
+### Get Fournisseur by ID
+GET http://localhost:8090/api/fournisseurs/1
+
+### Update Fournisseur
+PUT http://localhost:8090/api/fournisseurs/1
+Content-Type: application/json
+
+{
+  "nom": "Fournisseur Updated",
+  "email": "fournisseur@example.com",
+  "telephone": "987654321"
+}
+
+### Delete Fournisseur
+DELETE http://localhost:8090/api/fournisseurs/1
+
+### Search Fournisseurs by Name
+GET http://localhost:8090/api/fournisseurs/search?nom=Example
+
+### Get Fournisseur by Email
+GET http://localhost:8090/api/fournisseurs/email/fournisseur@example.com
+
+### Medicament API
+
+### Create Medicament
+POST http://localhost:8090/api/medicaments
+Content-Type: application/json
+
+{
+  "nom": "Paracetamol",
+  "prixAchat": 5.0,
+  "prixVente": 10.0,
+  "quantiteStock": 100,
+  "seuilAlerte": 20,
+  "dateExpiration": "2024-12-31",
+  "fournisseur": {
+    "id": 1
+  }
+}
+
+### Get All Medicaments
+GET http://localhost:8090/api/medicaments
+
+### Get Medicament by ID
+GET http://localhost:8090/api/medicaments/1
+
+### Update Medicament
+PUT http://localhost:8090/api/medicaments/1
+Content-Type: application/json
+
+{
+  "nom": "Paracetamol",
+  "prixAchat": 5.0,
+  "prixVente": 12.0,
+  "quantiteStock": 100,
+  "seuilAlerte": 20,
+  "dateExpiration": "2024-12-31",
+  "fournisseur": {
+    "id": 1
+  }
+}
+
+### Delete Medicament
+DELETE http://localhost:8090/api/medicaments/1
+
+### Search Medicaments by Name
+GET http://localhost:8090/api/medicaments/search?nom=Para
+
+### Get Medicaments by Fournisseur
+GET http://localhost:8090/api/medicaments/fournisseur/1
+
+### Update Stock
+PATCH http://localhost:8090/api/medicaments/1/stock?quantite=10
+
+### Achat API
+
+### Create Achat
+POST http://localhost:8090/api/achats
+Content-Type: application/json
+
+{
+  "dateAchat": "2023-06-15",
+  "fournisseur": {
+    "id": 1
+  },
+  "ligneAchats": [
+    {
+      "medicament": {
+        "id": 1
+      },
+      "quantite": 50,
+      "prixUnitaire": 5.0,
+      "dateExpiration": "2024-12-31"
+    },
+    {
+      "medicament": {
+        "id": 2
+      },
+      "quantite": 30,
+      "prixUnitaire": 8.0,
+      "dateExpiration": "2024-10-15"
+    }
+  ]
+}
+
+### Get All Achats
+GET http://localhost:8090/api/achats
+
+### Get Achat by ID
+GET http://localhost:8090/api/achats/1
+
+### Delete Achat
+DELETE http://localhost:8090/api/achats/1
+
+### Get Achats by Date Range
+GET http://localhost:8090/api/achats/date?startDate=2023-01-01&endDate=2023-12-31
+
+### Get Achats by Fournisseur
+GET http://localhost:8090/api/achats/fournisseur/1
+
+### Get Achats by Date Range and Fournisseur
+GET http://localhost:8090/api/achats/search?startDate=2023-01-01&endDate=2023-12-31&fournisseurId=1
+
+### Get Lignes Achat by Achat
+GET http://localhost:8090/api/achats/1/lignes
+
+### Vente API
+
+### Create Vente
+POST http://localhost:8090/api/ventes
+Content-Type: application/json
+
+{
+  "dateVente": "2023-06-20",
+  "ligneVentes": [
+    {
+      "medicament": {
+        "id": 1
+      },
+      "quantite": 5,
+      "prixUnitaire": 10.0
+    },
+    {
+      "medicament": {
+        "id": 2
+      },
+      "quantite": 3,
+      "prixUnitaire": 15.0
+    }
+  ]
+}
+
+### Get All Ventes
+GET http://localhost:8090/api/ventes
+
+### Get Vente by ID
+GET http://localhost:8090/api/ventes/1
+
+### Delete Vente
+DELETE http://localhost:8090/api/ventes/1
+
+### Get Ventes by Date Range
+GET http://localhost:8090/api/ventes/date?startDate=2023-01-01&endDate=2023-12-31
+
+### Get Ventes by Montant Greater Than
+GET http://localhost:8090/api/ventes/montant/greater?montant=100
+
+### Get Ventes by Montant Less Than
+GET http://localhost:8090/api/ventes/montant/less?montant=50
+
+### Get Lignes Vente by Vente
+GET http://localhost:8090/api/ventes/1/lignes
+
+### Alert API
+
+### Get All Alerts
+GET http://localhost:8090/api/alerts
+
+### Get Low Stock Alerts
+GET http://localhost:8090/api/alerts/low-stock
+
+### Get Expiring Alerts (default 30 days)
+GET http://localhost:8090/api/alerts/expiring
+
+### Get Expiring Alerts (custom days)
+GET http://localhost:8090/api/alerts/expiring?days=60
+
+### Get Expired Medicaments
+GET http://localhost:8090/api/alerts/expired
+
+### Get Dashboard Data
+GET http://localhost:8090/api/alerts/dashboard

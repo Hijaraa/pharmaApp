@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Management System</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Pharmacy Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/medicaments}">Medications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/produits}">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/ventes}">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/achats}">Purchases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/fournisseurs}">Suppliers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Pharmacy Management System</h1>
+            <p class="lead">A comprehensive solution for managing your pharmacy operations.</p>
+            <hr class="my-4">
+            <p>Use the navigation menu to access different sections of the application.</p>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Medications</h5>
+                        <p class="card-text">Manage your medication inventory.</p>
+                        <a th:href="@{/medicaments}" class="btn btn-primary">Go to Medications</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Products</h5>
+                        <p class="card-text">Manage your product inventory.</p>
+                        <a th:href="@{/produits}" class="btn btn-primary">Go to Products</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sales</h5>
+                        <p class="card-text">View and manage sales transactions.</p>
+                        <a th:href="@{/ventes}" class="btn btn-primary">Go to Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Purchases</h5>
+                        <p class="card-text">Manage purchase orders and inventory restocking.</p>
+                        <a th:href="@{/achats}" class="btn btn-primary">Go to Purchases</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Suppliers</h5>
+                        <p class="card-text">Manage your supplier information.</p>
+                        <a th:href="@{/fournisseurs}" class="btn btn-primary">Go to Suppliers</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Alerts</h5>
+                        <p class="card-text">View inventory alerts and notifications.</p>
+                        <a th:href="@{/alerts}" class="btn btn-primary">Go to Alerts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-4">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2025 Pharmacy Management System
+        </div>
+    </footer>
+
+    <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

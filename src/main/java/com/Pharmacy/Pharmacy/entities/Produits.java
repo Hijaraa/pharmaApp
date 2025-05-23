@@ -1,6 +1,6 @@
 package com.Pharmacy.Pharmacy.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Produits {

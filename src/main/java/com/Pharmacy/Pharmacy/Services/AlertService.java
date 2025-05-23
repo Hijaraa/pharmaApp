@@ -20,20 +20,20 @@ public class AlertService {
     // Get all alerts (low stock and expiring medications)
     public Map<String, List<Medicament>> getAllAlerts() {
         Map<String, List<Medicament>> alerts = new HashMap<>();
-        
+
         // Get medications with low stock
         List<Medicament> lowStockMedicaments = medicamentRepository.findMedicamentsBelowThreshold();
         alerts.put("lowStock", lowStockMedicaments);
-        
+
         // Get medications expiring within 30 days
         LocalDate thirtyDaysFromNow = LocalDate.now().plusDays(30);
         List<Medicament> expiringMedicaments = medicamentRepository.findByDateExpirationBefore(thirtyDaysFromNow);
         alerts.put("expiringSoon", expiringMedicaments);
-        
+
         // Get expired medications
         List<Medicament> expiredMedicaments = medicamentRepository.findByDateExpirationBefore(LocalDate.now());
         alerts.put("expired", expiredMedicaments);
-        
+
         return alerts;
     }
 
@@ -53,25 +53,53 @@ public class AlertService {
         return medicamentRepository.findByDateExpirationBefore(LocalDate.now());
     }
 
+    // Get medications with low stock (alias for getLowStockAlerts for test compatibility)
+    public List<Medicament> getLowStockMedicaments() {
+        return getLowStockAlerts();
+    }
+
+    // Get medications near expiration (alias for getExpiringAlerts for test compatibility)
+    public List<Medicament> getNearExpirationMedicaments(int days) {
+        return getExpiringAlerts(days);
+    }
+
+    // Get all alerts as a list with specified expiration days (for test compatibility)
+    public List<Medicament> getAllAlerts(int days) {
+        List<Medicament> allAlerts = new ArrayList<>();
+
+        // Add low stock medicaments
+        allAlerts.addAll(getLowStockAlerts());
+
+        // Add near expiration medicaments
+        List<Medicament> expiringMedicaments = getExpiringAlerts(days);
+        for (Medicament med : expiringMedicaments) {
+            if (!allAlerts.contains(med)) {
+                allAlerts.add(med);
+            }
+        }
+
+        return allAlerts;
+    }
+
     // Get dashboard data
     public Map<String, Object> getDashboardData() {
         Map<String, Object> dashboardData = new HashMap<>();
-        
+
         // Get alert counts
         List<Medicament> lowStockMedicaments = medicamentRepository.findMedicamentsBelowThreshold();
         List<Medicament> expiringMedicaments = medicamentRepository.findByDateExpirationBefore(LocalDate.now().plusDays(30));
         List<Medicament> expiredMedicaments = medicamentRepository.findByDateExpirationBefore(LocalDate.now());
-        
+
         dashboardData.put("lowStockCount", lowStockMedicaments.size());
         dashboardData.put("expiringCount", expiringMedicaments.size());
         dashboardData.put("expiredCount", expiredMedicaments.size());
         dashboardData.put("totalAlerts", lowStockMedicaments.size() + expiringMedicaments.size() + expiredMedicaments.size());
-        
+
         // Add the actual alert data
         dashboardData.put("lowStockMedicaments", lowStockMedicaments);
         dashboardData.put("expiringMedicaments", expiringMedicaments);
         dashboardData.put("expiredMedicaments", expiredMedicaments);
-        
+
         return dashboardData;
     }
 }

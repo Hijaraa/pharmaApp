@@ -1,6 +1,6 @@
 package com.Pharmacy.Pharmacy.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Admin {
@@ -9,13 +9,15 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
     private String email;
     private String password;
 
     // Constructors
     public Admin() {}
 
-    public Admin(String email, String password) {
+    public Admin(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
@@ -27,6 +29,14 @@ public class Admin {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

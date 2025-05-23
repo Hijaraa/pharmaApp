@@ -1,6 +1,6 @@
 package com.Pharmacy.Pharmacy.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +11,7 @@ public class Achat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "date")
     private LocalDate dateAchat;
     private Double montantTotal;
 

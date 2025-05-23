@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Backend service (serving both backend API and frontend)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pharmacy-app-prod
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/pharmacy?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=pharmacyuser
+      - SPRING_DATASOURCE_PASSWORD=pharmacypass
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - pharmacy-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Database service
+  db:
+    image: mysql:8.0
+    container_name: pharmacy-db-prod
+    environment:
+      - MYSQL_DATABASE=pharmacy
+      - MYSQL_USER=pharmacyuser
+      - MYSQL_PASSWORD=pharmacypass
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - pharmacy-db-data-prod:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - pharmacy-network
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "pharmacyuser", "-ppharmacypass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Database admin tool
+  adminer:
+    image: adminer
+    container_name: pharmacy-adminer-prod
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - pharmacy-network
+
+# Volumes
+volumes:
+  pharmacy-db-data-prod:
+    name: pharmacy-db-data-prod
+
+# Networks
+networks:
+  pharmacy-network:
+    name: pharmacy-network-prod
